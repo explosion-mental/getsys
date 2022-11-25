@@ -2,6 +2,8 @@
 /// CPU related utility functions that are used in Cpu in the backend
 mod cpu_utils {
     use std::path::Path;
+    use std::fs::File;
+    use std::io::Read;
 
     pub enum TurboBoost {
         Intelp,
@@ -21,12 +23,21 @@ mod cpu_utils {
 
         return TurboBoost::None;
     }
+
+    pub fn read_path(path: &str) -> String {
+        let mut ret = String::new();
+
+        File::open(path).expect("Cannot open file.")
+                        .read_to_string(&mut ret)
+                        .expect("Cannot read file.");
+
+        ret
+    }
 }
 
 /* public dev interface */
-use crate::cpu_utils::get_turbo_path;
+use crate::cpu_utils::{get_turbo_path, read_path};
 use crate::cpu_utils::TurboBoost;
-use std::io::Read;
 use std::io::prelude::*;
 use std::fs::File;
 use glob::glob;
@@ -37,7 +48,6 @@ pub struct Cpu {}
 impl Cpu {
     ///Returns true if the turbo boost is enabled, false if it is disabled or not supported.
     pub fn turbo() -> bool {
-        let mut governor = String::new();
         let path;
 
         match get_turbo_path() {
@@ -46,11 +56,7 @@ impl Cpu {
             TurboBoost::CpuFreq => path = "/sys/devices/system/cpu/cpufreq/boost",
         }
 
-        File::open(path).expect("Cannot open file.")
-                        .read_to_string(&mut governor)
-                        .expect("Cannot read file.");
-
-        if governor.trim() == "1" {
+        if read_path(path).trim() == "1" {
             return true
         } else {
             return false
@@ -132,13 +138,8 @@ impl Cpu {
     pub fn temp() -> u32 {
         //TODO check for paths
         let path = "/sys/class/thermal/thermal_zone0/temp";
-        let mut avgtemp = String::new();
 
-        File::open(path).expect("Cannot open file.")
-                        .read_to_string(&mut avgtemp)
-                        .expect("Cannot read file.");
-
-        avgtemp.trim().parse::<u32>().unwrap() / 1000 as u32
+        read_path(path).trim().parse::<u32>().unwrap() / 1000 as u32
     }
 }
 
