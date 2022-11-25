@@ -27,6 +27,7 @@ mod cpu_utils {
 use crate::cpu_utils::get_turbo_path;
 use crate::cpu_utils::TurboBoost;
 use std::io::Read;
+use std::io::prelude::*;
 use std::fs::File;
 use glob::glob;
 
@@ -66,8 +67,56 @@ impl Cpu {
         cnt
     }
 
-    fn perc() -> u32 {
-        100
+    ///Average CPU usage, from 0% - 100%
+    pub fn perc() -> u32 {
+        //TODO to get an average cpu percentage, it needs to be in an interval of time. The sleep()
+        //part will not be hardcoded here, and it's left to the dev to define
+        let mut first_line = String::new();
+        let mut buffer = std::io::BufReader::new(
+                    File::open("/proc/stat").unwrap()
+                    );
+
+        buffer.read_line(&mut first_line).expect("Unable to read line");
+
+        let mut s = first_line.split_ascii_whitespace();
+
+        s.next().unwrap();
+        /* cpu user nice system idle iowait irq softirq */
+        let user  = s.next().unwrap().parse::<f64>().unwrap();
+        let nice  = s.next().unwrap().parse::<f64>().unwrap();
+        let sys   = s.next().unwrap().parse::<f64>().unwrap();
+        let idle  = s.next().unwrap().parse::<f64>().unwrap();
+        let wait  = s.next().unwrap().parse::<f64>().unwrap();
+        let irq   = s.next().unwrap().parse::<f64>().unwrap();
+        let sirq  = s.next().unwrap().parse::<f64>().unwrap();
+
+
+        let mut first_line = String::new();
+        let mut buffer = std::io::BufReader::new(
+                    File::open("/proc/stat").unwrap()
+                    );
+        buffer.read_line(&mut first_line).expect("Unable to read line");
+        let mut s = first_line.split_ascii_whitespace();
+
+        s.next().unwrap();
+        let user2 = s.next().unwrap().parse::<f64>().unwrap();
+        let nice2 = s.next().unwrap().parse::<f64>().unwrap();
+        let  sys2 = s.next().unwrap().parse::<f64>().unwrap();
+        let idle2 = s.next().unwrap().parse::<f64>().unwrap();
+        let wait2 = s.next().unwrap().parse::<f64>().unwrap();
+        let  irq2 = s.next().unwrap().parse::<f64>().unwrap();
+        let sirq2 = s.next().unwrap().parse::<f64>().unwrap();
+
+        if user2 == 0.0 { return 0 }
+
+        let sum = (user2 + nice2 + sys2 + idle2 + wait2 + irq2 + sirq2) -
+                  (user + nice + sys + idle + wait + irq + sirq);
+
+        if sum == 0.0 { return 0 }
+
+        (100.0 * ((user2 + nice2 + sys2 + wait + irq) -
+                (user + nice + sys + idle + wait + irq + sirq)) / sum)
+            as u32
     }
 
     ///Average system temperature
