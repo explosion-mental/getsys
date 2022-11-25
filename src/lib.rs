@@ -67,21 +67,26 @@ impl Cpu {
         cnt
     }
 
-    ///Average CPU usage, from 0% - 100%
-    pub fn perc() -> u32 {
-        //TODO to get an average cpu percentage, it needs to be in an interval of time. The sleep()
-        //part will not be hardcoded here, and it's left to the dev to define
-        let mut first_line = String::new();
+    ///Average CPU usage as a f64 value percentage from 0% - 100%. It takes as a parameter the
+    ///amount of time to sleep in between reads, since to get an average of the usage, we will need
+    ///to compare values passed an interval of time.
+    pub fn perc(time: u32) -> f64 {
+
+        if time == 0 { return 0.0 } //result will be 0 anyway.
+
+        /* read the first line of /proc/stat */
+        let mut firstline = String::new();
         let mut buffer = std::io::BufReader::new(
                     File::open("/proc/stat").unwrap()
                     );
+        buffer.read_line(&mut firstline).expect("Unable to read line");
 
-        buffer.read_line(&mut first_line).expect("Unable to read line");
+        let mut s = firstline.split_ascii_whitespace();
 
-        let mut s = first_line.split_ascii_whitespace();
-
-        s.next().unwrap();
-        /* cpu user nice system idle iowait irq softirq */
+        /* cpu user nice system idle iowait irq softirq
+         *        0    1      2    3      4   5       6
+         */
+        s.next().unwrap(); //ignore the "cpu" word
         let user  = s.next().unwrap().parse::<f64>().unwrap();
         let nice  = s.next().unwrap().parse::<f64>().unwrap();
         let sys   = s.next().unwrap().parse::<f64>().unwrap();
@@ -90,15 +95,18 @@ impl Cpu {
         let irq   = s.next().unwrap().parse::<f64>().unwrap();
         let sirq  = s.next().unwrap().parse::<f64>().unwrap();
 
+        /* sleep */
+        std::thread::sleep(std::time::Duration::from_secs(time.into()));
 
-        let mut first_line = String::new();
+        //agane..
+        let mut firstline = String::new();
         let mut buffer = std::io::BufReader::new(
                     File::open("/proc/stat").unwrap()
                     );
-        buffer.read_line(&mut first_line).expect("Unable to read line");
-        let mut s = first_line.split_ascii_whitespace();
+        buffer.read_line(&mut firstline).expect("Unable to read line");
+        let mut s = firstline.split_ascii_whitespace();
 
-        s.next().unwrap();
+        s.next().unwrap(); //ignore the "cpu" word
         let user2 = s.next().unwrap().parse::<f64>().unwrap();
         let nice2 = s.next().unwrap().parse::<f64>().unwrap();
         let  sys2 = s.next().unwrap().parse::<f64>().unwrap();
@@ -107,16 +115,17 @@ impl Cpu {
         let  irq2 = s.next().unwrap().parse::<f64>().unwrap();
         let sirq2 = s.next().unwrap().parse::<f64>().unwrap();
 
-        if user2 == 0.0 { return 0 }
+        /* get an average */
+
+        if user2 == 0.0 { return 0.0 }
 
         let sum = (user2 + nice2 + sys2 + idle2 + wait2 + irq2 + sirq2) -
                   (user + nice + sys + idle + wait + irq + sirq);
 
-        if sum == 0.0 { return 0 }
+        if sum == 0.0 { return 0.0 }
 
-        (100.0 * ((user2 + nice2 + sys2 + wait + irq) -
-                (user + nice + sys + idle + wait + irq + sirq)) / sum)
-            as u32
+        100.0 * ((user2 + nice2 + sys2 + irq2 + sirq2) -
+                 (user  + nice  + sys  + irq  + sirq)) / sum
     }
 
     ///Average system temperature
