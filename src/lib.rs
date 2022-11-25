@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+/// CPU related utility functions that are used in Cpu in the backend
 mod cpu_utils {
     use::std::path::Path;
 
@@ -20,7 +21,9 @@ mod cpu_utils {
 use crate::cpu_utils::get_turbo_path;
 use std::io::Read;
 use std::fs::File;
+use glob::glob;
 
+/// Cpu interface
 pub struct Cpu {}
 
 impl Cpu {
@@ -44,8 +47,13 @@ impl Cpu {
         }
     }
 
-    fn cores() -> u32 {
-        8
+    //TODO use sysconf
+    pub fn cores() -> u32 {
+        let mut cnt: u32 = 0;
+        for _i in glob("/sys/devices/system/cpu/cpu[0-9]*").expect("Failed to read glob pattern") {
+            cnt += 1;
+        }
+        cnt
     }
 
     fn perc() -> u32 {
