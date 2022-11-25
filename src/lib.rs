@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 /// CPU related utility functions that are used in Cpu in the backend
 mod cpu_utils {
     use std::path::Path;
