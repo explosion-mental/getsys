@@ -70,8 +70,17 @@ impl Cpu {
         100
     }
 
-    fn temp() -> u32 {
-        42
+    ///Average system temperature
+    pub fn temp() -> u32 {
+        //TODO check for paths
+        let path = "/sys/class/thermal/thermal_zone0/temp";
+        let mut avgtemp = String::new();
+
+        File::open(path).expect("Cannot open file.")
+                        .read_to_string(&mut avgtemp)
+                        .expect("Cannot read file.");
+
+        avgtemp.trim().parse::<u32>().unwrap() / 1000 as u32
     }
 }
 
