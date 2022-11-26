@@ -1,42 +1,6 @@
-/// CPU related utility functions that are used in Cpu in the backend
-mod cpu_utils {
-    use std::path::Path;
-    use std::fs::File;
-    use std::io::Read;
-
-    pub enum TurboBoost {
-        Intelp,
-        CpuFreq,
-        None,
-    }
-
-    pub fn get_turbo_path() -> TurboBoost {
-        let intelpstate = "/sys/devices/system/cpu/intel_pstate/no_turbo";
-        let cpufreq = "/sys/devices/system/cpu/cpufreq/boost";
-
-        if Path::new(intelpstate).exists() {
-            return TurboBoost::Intelp;
-        } else if Path::new(cpufreq).exists() {
-            return TurboBoost::CpuFreq;
-        }
-
-        return TurboBoost::None;
-    }
-
-    pub fn read_path(path: &str) -> String {
-        let mut ret = String::new();
-
-        File::open(path).expect("Cannot open file.")
-                        .read_to_string(&mut ret)
-                        .expect("Cannot read file.");
-
-        ret
-    }
-}
-
-/* public dev interface */
-use crate::cpu_utils::{get_turbo_path, read_path};
-use crate::cpu_utils::TurboBoost;
+mod utils;
+use utils::{get_turbo_path, read_path};
+use utils::TurboBoost;
 use std::io::prelude::*;
 use std::fs::File;
 use glob::glob;
