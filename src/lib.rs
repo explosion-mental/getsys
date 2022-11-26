@@ -112,11 +112,31 @@ impl Cpu {
 pub struct Battery {}
 
 impl Battery {
+    ///Whether the AC adapter is connected or not
     pub fn ac_status() -> bool {
+        for entry in glob("/sys/class/power_supply/A*/online").expect("Failed to read glob pattern") {
+            match entry {
+                Ok(path) => if read_path(path.to_str().unwrap()).trim() == "1" { return true } else { return false },
+
+                // if the path matched but was unreadable,
+                // thereby preventing its contents from matching
+                Err(e) => println!("{:?}", e),
+            }
+        }
         false
     }
 
+    ///Battery percentage from 0% - 100%
     pub fn perc() -> u32 {
-        50
+        // some notes on /sys/class/power_supply/BAT0 ..
+        // /capacity: percentage level of the battery
+        // /capacity_leves: verbose value of '/capacity'; Normal - ..
+        // /energy_full: total amount of battery (e- capacity)
+        // /energy_now:  current amount of battery
+        // /energy_full_design: factory total amount of battery
+
+        // if we take 100. * (energy_now / energy_full) we get a more precise value of the percentage battery
+
+        read_path("/sys/class/power_supply/BAT0/capacity").trim().parse::<u32>().unwrap()
     }
 }
