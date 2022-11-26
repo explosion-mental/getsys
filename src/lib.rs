@@ -1,3 +1,5 @@
+//! Library to get _some_ system _stuff
+
 mod utils;
 use utils::{get_turbo_path, read_path};
 use utils::TurboBoost;
@@ -5,7 +7,7 @@ use std::io::prelude::*;
 use std::fs::File;
 use glob::glob;
 
-/// Cpu interface
+/// CPU related functions
 pub struct Cpu {}
 
 impl Cpu {
@@ -106,3 +108,15 @@ impl Cpu {
     }
 }
 
+/// Battery related functions
+pub struct Battery {}
+
+impl Battery {
+    pub fn ac_status() -> bool {
+        false
+    }
+
+    pub fn perc() -> u32 {
+        50
+    }
+}
