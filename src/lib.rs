@@ -122,7 +122,7 @@ impl PerCpu {
         //governor
         for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_governor").expect("Failed to read glob pattern") {
             match entry {
-                Ok(path) => govs.push(read_path(path.to_str().unwrap())),
+                Ok(path) => govs.push(read_path(path.to_str().unwrap()).trim().to_string()),
 
                 // if the path matched but was unreadable,
                 // thereby preventing its contents from matching
@@ -142,7 +142,7 @@ impl PerCpu {
         //frequency
         for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_cur_freq").expect("Failed to read glob pattern") {
             match entry {
-                Ok(path) => govs.push(read_path(path.to_str().unwrap())),
+                Ok(path) => govs.push(read_path(path.to_str().unwrap()).trim().to_string()),
 
                 // if the path matched but was unreadable,
                 // thereby preventing its contents from matching
@@ -162,7 +162,7 @@ impl PerCpu {
         //driver
         for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_driver").expect("Failed to read glob pattern") {
             match entry {
-                Ok(path) => govs.push(read_path(path.to_str().unwrap())),
+                Ok(path) => govs.push(read_path(path.to_str().unwrap()).trim().to_string()),
 
                 // if the path matched but was unreadable,
                 // thereby preventing its contents from matching
