@@ -108,6 +108,72 @@ impl Cpu {
     }
 }
 
+/// Per cpu information, rather than average or aggregates like Cpu
+pub struct PerCpu {}
+
+//TODO there is more per cpu information in /proc/stat/
+impl PerCpu {
+    /// Returns a vector of strings that represents the scaling governor the
+    /// respective cpu is using, from cpu 0 to cpu X.
+    /// The vector is as large as the number of cpus.
+    pub fn governor() -> Vec<String> {
+        let mut govs: Vec<String> = Vec::new();
+
+        //governor
+        for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_governor").expect("Failed to read glob pattern") {
+            match entry {
+                Ok(path) => govs.push(read_path(path.to_str().unwrap())),
+
+                // if the path matched but was unreadable,
+                // thereby preventing its contents from matching
+                Err(e) => println!("{:?}", e),
+            }
+        }
+
+        govs
+    }
+
+    /// Returns a vector of strings that represents the current frequency the
+    /// respective cpu is using, from cpu 0 to cpu X.
+    /// The vector is as large as the number of cpus.
+    pub fn freq() -> Vec<String> {
+        let mut govs: Vec<String> = Vec::new();
+
+        //frequency
+        for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_cur_freq").expect("Failed to read glob pattern") {
+            match entry {
+                Ok(path) => govs.push(read_path(path.to_str().unwrap())),
+
+                // if the path matched but was unreadable,
+                // thereby preventing its contents from matching
+                Err(e) => println!("{:?}", e),
+            }
+        }
+
+        govs
+    }
+
+    /// Returns a vector of strings that represents the driver the
+    /// respective cpu is using, from cpu 0 to cpu X.
+    /// The vector is as large as the number of cpus.
+    pub fn driver() -> Vec<String> {
+        let mut govs: Vec<String> = Vec::new();
+
+        //driver
+        for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_driver").expect("Failed to read glob pattern") {
+            match entry {
+                Ok(path) => govs.push(read_path(path.to_str().unwrap())),
+
+                // if the path matched but was unreadable,
+                // thereby preventing its contents from matching
+                Err(e) => println!("{:?}", e),
+            }
+        }
+
+        govs
+    }
+}
+
 /// Battery related functions
 pub struct Battery {}
 
