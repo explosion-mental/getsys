@@ -30,5 +30,6 @@ pub fn read_path(path: &str) -> String {
         .read_to_string(&mut ret)
         .expect("Cannot read file.");
 
+    //ret.trim().to_strin()
     ret
 }
