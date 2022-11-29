@@ -1,4 +1,4 @@
-//! Library to get _some_ system _stuff
+//! Library to get _some_ system _stuff_
 
 mod util;
 use util::{get_turbo_path, read_path};
