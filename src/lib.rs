@@ -133,8 +133,8 @@ impl PerCpu {
         govs
     }
 
-    /// Returns a vector of strings that represents the current frequency the
-    /// respective cpu is using, from cpu 0 to cpu X.
+    /// Returns a vector of strings that represents the current frequency (kHz)
+    /// the respective cpu is using, from cpu 0 to cpu X.
     /// The vector is as large as the number of cpus.
     pub fn freq() -> Vec<String> {
         let mut govs: Vec<String> = Vec::new();
