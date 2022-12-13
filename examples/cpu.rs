@@ -4,25 +4,26 @@ use getsys::{Cpu, PerCpu};
 
 fn main() {
     let x = if Cpu::turbo() == true { "enabled" } else { "disabled" };
-    let z = Cpu::temp();
-    let m = Cpu::perc(1);
+    let y = Cpu::temp();
+    let z = Cpu::perc(1);
     println!("Turbo boost is: {}", x);
-    println!("Average temperature: {} °C", z);
-    println!("Average cpu percentage: {:.2}%", m);
+    println!("Average temperature: {} °C", y);
+    println!("Average cpu percentage: {:.2}%", z);
 
-    for (i, e) in PerCpu::freq().iter().enumerate() {
-        println!("CPU {} has frequency of: {}", i, e);
-    }
+    /* get vector of values */
+    let freq = PerCpu::freq();
+    let gov  = PerCpu::governor();
+    let driv = PerCpu::driver();
 
-    println!("");
+    let mut f = freq.iter();
+    let mut g = gov.iter();
+    let mut d = driv.iter();
 
-    for (i, e) in PerCpu::governor().iter().enumerate() {
-        println!("CPU {} uses {}", i, e);
-    }
-
-    println!("");
-
-    for (i, e) in PerCpu::driver().iter().enumerate() {
-        println!("CPU {} uses driver {}", i, e);
+    for i in 0..freq.len() {
+        println!("CPU{} {} {} {}", i,
+                 f.next().unwrap(),
+                 g.next().unwrap(),
+                 d.next().unwrap(),
+                 );
     }
 }
