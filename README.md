@@ -4,6 +4,15 @@ Support: Linux.
 
 Mainly made to have a simpler and straightforward interface, and backend.
 
+# Features
+- cpu turbo boost state
+- average temperature
+- cpu percentage over an interval of `Duration`
+- Per cpu values:
+	* [scaling govenor](https://www.kernel.org/doc/html/v4.14/admin-guide/pm/cpufreq.html)
+	* driver
+	* frequency
+
 # docs
 ```
 cargo doc --open
