@@ -28,16 +28,6 @@ impl Cpu {
         }
     }
 
-    ///Returns the number of cores of the system, basically nproc().
-    pub fn cores() -> u32 {
-        //TODO use sysconf
-        let mut cnt: u32 = 0;
-        for _i in glob("/sys/devices/system/cpu/cpu[0-9]*").expect("Failed to read glob pattern") {
-            cnt += 1;
-        }
-        cnt
-    }
-
     ///Average CPU usage as a f64 value percentage from 0% - 100%. It takes as a parameter the
     ///amount of time to sleep in between reads, since to get an average of the usage, we will need
     ///to compare values passed an interval of time.
