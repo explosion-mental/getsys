@@ -1,8 +1,7 @@
 //! Library to get _some_ system _stuff_
 
 mod util;
-use util::get_turbo_path;
-use util::TurboBoost;
+use util::{get_turbo_path, TurboBoost};
 use std::io::prelude::*;
 use std::fs;
 use std::fs::File;
