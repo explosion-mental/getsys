@@ -3,12 +3,14 @@ extern crate getsys;
 use getsys::{Cpu, PerCpu};
 
 fn main() {
-    let x = if Cpu::turbo() == true { "enabled" } else { "disabled" };
-    let y = Cpu::temp();
-    let z = Cpu::perc(std::time::Duration::from_millis(200));
-    println!("Turbo boost is: {}", x);
-    println!("Average temperature: {} °C", y);
-    println!("Average cpu percentage: {:.2}%", z);
+    println!("Turbo boost is: {}",
+             if Cpu::turbo() == true { "enabled" } else { "disabled" }
+             );
+    println!("Average temperature: {} °C", Cpu::temp());
+    println!("Getting cpu percentage...");
+    println!("Average cpu percentage: {:.2}%",
+             Cpu::perc(std::time::Duration::from_millis(200))
+             );
 
     /* get vector of values */
     let freq = PerCpu::freq();
