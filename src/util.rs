@@ -1,7 +1,5 @@
 /// CPU related utility functions that are used in Cpu in the backend
 use std::path::Path;
-use std::fs::File;
-use std::io::Read;
 
 pub enum TurboBoost {
     Intelp,
@@ -22,14 +20,3 @@ pub fn get_turbo_path() -> TurboBoost {
     return TurboBoost::None;
 }
 
-//read file from path and return a String with ALL the contents of it.
-pub fn read_path(path: &str) -> String {
-    let mut ret = String::new();
-
-    File::open(path).expect("Cannot open file.")
-        .read_to_string(&mut ret)
-        .expect("Cannot read file.");
-
-    //ret.trim().to_strin()
-    ret
-}

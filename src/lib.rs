@@ -1,9 +1,10 @@
 //! Library to get _some_ system _stuff_
 
 mod util;
-use util::{get_turbo_path, read_path};
+use util::{get_turbo_path};
 use util::TurboBoost;
 use std::io::prelude::*;
+use std::fs;
 use std::fs::File;
 use glob::glob;
 
@@ -21,11 +22,11 @@ impl Cpu {
             TurboBoost::CpuFreq => path = "/sys/devices/system/cpu/cpufreq/boost",
         }
 
-        if read_path(path).trim() == "1" {
+        if fs::read_to_string(path).expect("sysfs file shoudln't return an error") == "1" {
             return true
-        } else {
-            return false
         }
+
+        false
     }
 
     ///Average CPU usage as a f64 value percentage from 0% - 100%. It takes as a parameter the
@@ -94,12 +95,13 @@ impl Cpu {
         //TODO check for paths
         let path = "/sys/class/thermal/thermal_zone0/temp";
 
-        read_path(path).trim().parse::<u32>().unwrap() / 1000 as u32
+        fs::read_to_string(path).expect("reason").trim().parse::<u32>().unwrap() / 1000 as u32
     }
 }
 
 /// Per cpu information, rather than average or aggregates like Cpu
-pub struct PerCpu {}
+pub struct PerCpu {
+}
 
 //TODO there is more per cpu information in /proc/stat/
 impl PerCpu {
