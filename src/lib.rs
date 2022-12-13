@@ -1,7 +1,7 @@
 //! Library to get _some_ system _stuff_
 
 mod util;
-use util::{get_turbo_path};
+use util::get_turbo_path;
 use util::TurboBoost;
 use std::io::prelude::*;
 use std::fs;
@@ -32,9 +32,7 @@ impl Cpu {
     ///Average CPU usage as a f64 value percentage from 0% - 100%. It takes as a parameter the
     ///amount of time to sleep in between reads, since to get an average of the usage, we will need
     ///to compare values passed an interval of time.
-    pub fn perc(time: u32) -> f64 {
-
-        if time == 0 { return 0.0 } //result will be 0 anyway.
+    pub fn perc(sleeptime: std::time::Duration) -> f64 {
 
         /* read the first line of /proc/stat */
         let mut firstline = String::new();
@@ -58,7 +56,7 @@ impl Cpu {
         let sirq  = s.next().unwrap().parse::<f64>().unwrap();
 
         /* sleep */
-        std::thread::sleep(std::time::Duration::from_secs(time.into()));
+        std::thread::sleep(sleeptime);
 
         //agane..
         let mut firstline = String::new();
