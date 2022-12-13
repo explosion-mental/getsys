@@ -22,7 +22,7 @@ impl Cpu {
             TurboBoost::CpuFreq => path = "/sys/devices/system/cpu/cpufreq/boost",
         }
 
-        if fs::read_to_string(path).expect("sysfs file shoudln't return an error") == "1" {
+        if fs::read_to_string(path).expect("sysfs file shoudln't return an error").trim() == "1" {
             return true
         }
 
