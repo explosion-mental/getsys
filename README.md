@@ -24,7 +24,7 @@ cargo doc --open
 
 # Honorable Mentions
 
-I have written this little library to fetch information I couldn't get with other crates, but there are very nicely writen crates that provide information about the system that I need.
+I have written this little library to fetch information I couldn't get with other crates, but there are very nicely writen crates that provide information about the system that this crate doesn't provide:
 
 - battery - [crates.io](https://crates.io/crates/battery) - [github](https://github.com/svartalf/rust-battery)
 - num_cpus - [crates.io](https://crates.io/crates/num_cpus) - [github](https://github.com/seanmonstar/num_cpus)
