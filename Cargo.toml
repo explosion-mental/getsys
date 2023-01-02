@@ -2,6 +2,11 @@
 name = "getsys"
 version = "1.0.0"
 edition = "2021"
+license = "MIT"
+keywords = ["stats", "governor", "turbo-boost", "usage"]
+description = "Library to fetch 'per CPUs' stats, average cpu usage and temperature, turbo boost state"
+repository = "https://codeberg.org/explosion-mental/getsys"
+homepage = "https://explosion-mental.codeberg.page/p/getsys.html"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
