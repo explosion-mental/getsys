@@ -13,13 +13,11 @@ pub struct Cpu {}
 impl Cpu {
     ///Returns true if the turbo boost is enabled, false if it is disabled or not supported.
     pub fn turbo() -> bool {
-        let path;
-
-        match get_turbo_path() {
+        let path = match get_turbo_path() {
             TurboBoost::None => return false,
-            TurboBoost::Intelp => path = "/sys/devices/system/cpu/intel_pstate/no_turbo",
-            TurboBoost::CpuFreq => path = "/sys/devices/system/cpu/cpufreq/boost",
-        }
+            TurboBoost::Intelp => "/sys/devices/system/cpu/intel_pstate/no_turbo",
+            TurboBoost::CpuFreq => "/sys/devices/system/cpu/cpufreq/boost",
+        };
 
         if fs::read_to_string(path).expect("sysfs file shoudln't return an error").trim() == "1" {
             return true
@@ -92,7 +90,7 @@ impl Cpu {
         //TODO check for paths
         let path = "/sys/class/thermal/thermal_zone0/temp";
 
-        fs::read_to_string(path).expect("reason").trim().parse::<u32>().unwrap() / 1000 as u32
+        fs::read_to_string(path).expect("reason").trim().parse::<u32>().unwrap() / 1000_u32
     }
 }
 
