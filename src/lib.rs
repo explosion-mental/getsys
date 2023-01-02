@@ -87,8 +87,19 @@ impl Cpu {
 
     ///Average system temperature
     pub fn temp() -> u32 {
-        //TODO check for paths
-        let path = "/sys/class/thermal/thermal_zone0/temp";
+        use std::path::Path;
+
+        //TODO check for other paths
+        let thermal = "/sys/class/thermal/thermal_zone0/temp";
+        let hwmon = "/sys/class/hwmon/hwmon0/device/temp1_input";
+
+        let path = if Path::new(thermal).exists() {
+            thermal
+        } else if Path::new(hwmon).exists() {
+            hwmon
+        } else { /* Err Couldn't get temp */
+            return 0;
+        };
 
         fs::read_to_string(path).expect("reason").trim().parse::<u32>().unwrap() / 1000_u32
     }
