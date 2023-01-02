@@ -17,6 +17,6 @@ pub fn get_turbo_path() -> TurboBoost {
         return TurboBoost::CpuFreq;
     }
 
-    return TurboBoost::None;
+    TurboBoost::None
 }
 
