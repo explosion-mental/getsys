@@ -34,13 +34,17 @@ impl Cpu {
     pub fn perc(sleeptime: std::time::Duration) -> f64 {
 
         /* read the first line of /proc/stat */
-        let mut firstline = String::new();
-        let mut buffer = std::io::BufReader::new(
-                    File::open("/proc/stat").unwrap()
-                    );
-        buffer.read_line(&mut firstline).expect("Unable to read line");
+        let read = || {
+            let mut firstline = String::new();
+            let mut buffer = std::io::BufReader::new(
+                File::open("/proc/stat").expect("Unable to open '/proc/stat'.")
+                );
+            buffer.read_line(&mut firstline).expect("Unable to read '/proc/stat'.");
+            firstline
+        };
 
-        let mut s = firstline.split_ascii_whitespace();
+        let s = read();
+        let mut s = s.split_ascii_whitespace();
 
         /* cpu user nice system idle iowait irq softirq
          *        0    1      2    3      4   5       6
@@ -58,12 +62,8 @@ impl Cpu {
         std::thread::sleep(sleeptime);
 
         //agane..
-        let mut firstline = String::new();
-        let mut buffer = std::io::BufReader::new(
-                    File::open("/proc/stat").unwrap()
-                    );
-        buffer.read_line(&mut firstline).expect("Unable to read line");
-        let mut s = firstline.split_ascii_whitespace();
+        let s = read();
+        let mut s = s.split_ascii_whitespace();
 
         s.next().unwrap(); //ignore the "cpu" word
         let user2 = s.next().unwrap().parse::<f64>().unwrap();
@@ -79,7 +79,7 @@ impl Cpu {
         if user2 == 0.0 { return 0.0 }
 
         let sum = (user2 + nice2 + sys2 + idle2 + wait2 + irq2 + sirq2) -
-                  (user + nice + sys + idle + wait + irq + sirq);
+                  (user  + nice  + sys  + idle  + wait  + irq  + sirq );
 
         if sum == 0.0 { return 0.0 }
 
