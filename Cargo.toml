@@ -3,6 +3,7 @@ name = "getsys"
 version = "1.0.1"
 edition = "2021"
 license = "MIT"
+authors = ["explosion-mental"]
 keywords = ["stats", "governor", "turbo-boost", "usage"]
 description = "Library to fetch 'per CPUs' stats, average cpu usage and temperature, turbo boost state"
 repository = "https://codeberg.org/explosion-mental/getsys"
