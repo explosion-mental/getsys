@@ -1,12 +1,9 @@
-//! Per cpu information, rather than average or aggregates like Cpu
+//! # Per cpu information, rather than average or aggregates like Cpu
+//! TODO there is more per cpu information in /proc/stat/
+//! TODO switch glob with num_cpus? **need more tests**
+//! Reference: https://www.kernel.org/doc/html/v4.14/admin-guide/pm/cpufreq.html
 use std::fs;
-
 use glob::glob;
-
-///TODO there is more per cpu information in /proc/stat/
-///TODO switch glob with num_cpus
-/// Reference: https://www.kernel.org/doc/html/v4.14/admin-guide/pm/cpufreq.html
-
 
 /// Returns a vector of strings that represents the scaling governor the
 /// respective cpu is using, from cpu 0 to cpu X.
@@ -17,15 +14,11 @@ use glob::glob;
 pub fn governor() -> Vec<String> {
     let mut govs: Vec<String> = Vec::new();
 
-    //governor
     for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_governor").expect("Failed to read glob pattern") {
         match entry {
             Ok(path) => govs.push(
                 fs::read_to_string(path).expect("sysfs file shoudln't return an error").trim().to_string()
             ),
-
-            // if the path matched but was unreadable,
-            // thereby preventing its contents from matching
             Err(e) => println!("{:?}", e),
         }
     }
@@ -36,19 +29,15 @@ pub fn governor() -> Vec<String> {
 /// Returns a vector of strings that represents the current frequency in kHz
 /// the respective cpu is using, from cpu 0 to cpu X.
 /// The vector is as large as the number of cpus.
+// TODO use a more precise type than a String?
 pub fn freq() -> Vec<String> {
     let mut govs: Vec<String> = Vec::new();
-    //TODO use a more precise type than a String
 
-    //frequency
     for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_cur_freq").expect("Failed to read glob pattern") {
         match entry {
             Ok(path) => govs.push(
                 fs::read_to_string(path).expect("sysfs file shoudln't return an error").trim().to_string()
             ),
-
-            // if the path matched but was unreadable,
-            // thereby preventing its contents from matching
             Err(e) => println!("{:?}", e),
         }
     }
@@ -62,15 +51,11 @@ pub fn freq() -> Vec<String> {
 pub fn driver() -> Vec<String> {
     let mut govs: Vec<String> = Vec::new();
 
-    //driver
     for entry in glob("/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_driver").expect("Failed to read glob pattern") {
         match entry {
             Ok(path) => govs.push(
                 fs::read_to_string(path).expect("sysfs file shoudln't return an error").trim().to_string()
             ),
-
-            // if the path matched but was unreadable,
-            // thereby preventing its contents from matching
             Err(e) => println!("{:?}", e),
         }
     }
