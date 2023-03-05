@@ -4,7 +4,8 @@ use std::fs;
 use glob::glob;
 
 ///TODO there is more per cpu information in /proc/stat/
-///Reference: https://www.kernel.org/doc/html/v4.14/admin-guide/pm/cpufreq.html
+///TODO switch glob with num_cpus
+/// Reference: https://www.kernel.org/doc/html/v4.14/admin-guide/pm/cpufreq.html
 
 
 /// Returns a vector of strings that represents the scaling governor the
