@@ -4,8 +4,8 @@
 
 /// Cpu functions
 pub mod cpu;
-pub use self::cpu::Cpu as Cpu;
+pub use self::cpu as Cpu;
 
 /// PerCpu functions
 pub mod percpu;
-pub use self::percpu::PerCpu as PerCpu;
+pub use self::percpu as PerCpu;
