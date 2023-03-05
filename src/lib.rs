@@ -2,11 +2,11 @@
 ///The plan is to add some stable support (minor versions) and then release v2 (major version) that
 ///implements proper error handling using thiserror macros.
 
-mod util;
-use util::{get_turbo_path, TurboBoost};
 use std::io::prelude::*;
 use std::fs;
 use std::fs::File;
+use std::path::Path;
+
 use glob::glob;
 
 /// CPU related functions
@@ -15,11 +15,18 @@ pub struct Cpu {}
 impl Cpu {
     ///Returns true if the turbo boost is enabled, false if it is disabled or not supported.
     pub fn turbo() -> bool {
-        let path = match get_turbo_path() {
-            TurboBoost::None => return false,
-            TurboBoost::Intelp => "/sys/devices/system/cpu/intel_pstate/no_turbo",
-            TurboBoost::CpuFreq => "/sys/devices/system/cpu/cpufreq/boost",
-        };
+        let path;
+        let intelpstate = "/sys/devices/system/cpu/intel_pstate/no_turbo";
+        let cpufreq = "/sys/devices/system/cpu/cpufreq/boost";
+
+        if Path::new(intelpstate).exists() {
+            path = intelpstate;
+        } else if Path::new(cpufreq).exists() {
+            path = cpufreq;
+        } else {
+            return false;
+        }
+
 
         if fs::read_to_string(path).expect("sysfs file shoudln't return an error").trim() == "1" {
             return true
@@ -89,8 +96,6 @@ impl Cpu {
 
     ///Average system temperature
     pub fn temp() -> u32 {
-        use std::path::Path;
-
         //TODO check for other paths
         let thermal = "/sys/class/thermal/thermal_zone0/temp";
         let hwmon = "/sys/class/hwmon/hwmon0/device/temp1_input";
