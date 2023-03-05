@@ -28,20 +28,14 @@ pub fn turbo() -> bool {
 /// amount of time to sleep in between reads, since to get an average of the usage, we will need
 /// to compare values passed an interval of time.
 pub fn perc(sleeptime: std::time::Duration) -> f64 {
-    /* read the first line of /proc/stat */
-    let read = || {
+    let getstats = || {
         let mut firstline = String::new();
         std::io::BufReader::new(
-            File::open("/proc/stat")
-                .expect("Unable to open '/proc/stat'.")
-        )
-            .read_line(&mut firstline)
-            .expect("Unable to read '/proc/stat'.");
-        firstline
-    };
-
-    let getstats = |s: String| {
-        let mut s = s.split_ascii_whitespace();
+            File::open("/proc/stat").expect("'/proc/stat' should exist.")
+            )
+            .read_line(&mut firstline).
+            expect("/proc fs should be avaliable for reading.");
+        let mut s = firstline.split_ascii_whitespace();
         // cpu user nice system idle iowait irq softirq
         //        0    1      2    3      4   5       6
         let _cpu     = s.next().unwrap(); //ignore the "cpu" word
@@ -57,23 +51,21 @@ pub fn perc(sleeptime: std::time::Duration) -> f64 {
     };
 
     // first iteration
-    let s = read();
-    let (user, nice, sys, idle, wait, irq, sirq) = getstats(s);
+    let (user, nice, sys, idle, wait, irq, sirq) = getstats();
 
     // sleep
     std::thread::sleep(sleeptime);
 
     // agane..
-    let s = read();
-    let (user2, nice2, sys2, idle2, wait2, irq2, sirq2) = getstats(s);
+    let (user2, nice2, sys2, idle2, wait2, irq2, sirq2) = getstats();
 
-    // get an average
-    if user2 == 0.0 { return 0.0 }
+    // Compare values and get an average
+    if user2 == 0.0 { return 0.0 } // No Change
 
     let sum = (user2 + nice2 + sys2 + idle2 + wait2 + irq2 + sirq2) -
-        (user  + nice  + sys  + idle  + wait  + irq  + sirq );
+              (user  + nice  + sys  + idle  + wait  + irq  + sirq );
 
-    if sum == 0.0 { return 0.0 }
+    if sum == 0.0 { return 0.0 } // No Change
 
     100.0 *
         ((user2 + nice2 + sys2 + irq2 + sirq2) - (user  + nice  + sys  + irq  + sirq))
