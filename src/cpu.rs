@@ -6,17 +6,15 @@ use std::path::Path;
 
 /// Returns true if the turbo boost is enabled, false if it is disabled or not supported.
 pub fn turbo() -> bool {
-    let path;
     let intelpstate = "/sys/devices/system/cpu/intel_pstate/no_turbo";
     let cpufreq = "/sys/devices/system/cpu/cpufreq/boost";
-
-    if Path::new(intelpstate).exists() {
-        path = intelpstate;
+    let path = if Path::new(intelpstate).exists() {
+        intelpstate
     } else if Path::new(cpufreq).exists() {
-        path = cpufreq;
+        cpufreq
     } else {
         return false;
-    }
+    };
 
 
     if fs::read_to_string(path).expect("sysfs file shoudln't return an error").trim() == "1" {
