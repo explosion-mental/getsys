@@ -1,10 +1,15 @@
 //! Per cpu information, rather than average or aggregates like Cpu
 //!
-//! TODO there is more per cpu information in /proc/stat/
+//! TODO there is more per cpu information in /proc/stat/, consider adding some
 //!
 //! TODO switch glob with num_cpus? **need more tests**
 //!
 //! Reference: <https://www.kernel.org/doc/html/v4.14/admin-guide/pm/cpufreq.html>
+//!
+//! # Examples
+//! ```
+#![doc = include_str!("../examples/percpu.rs")]
+//! ```
 use std::fs;
 use glob::glob;
 

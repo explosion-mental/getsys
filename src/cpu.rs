@@ -1,4 +1,8 @@
 //! CPU related functions
+//! # Examples
+//! ```
+#![doc = include_str!("../examples/cpu.rs")]
+//! ```
 use std::io::prelude::*;
 use std::fs;
 use std::fs::File;
