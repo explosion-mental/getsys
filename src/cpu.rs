@@ -66,14 +66,14 @@ pub fn perc(sleeptime: std::time::Duration) -> f64 {
         let mut s = firstline.split_ascii_whitespace();
         // cpu user nice system idle iowait irq softirq
         //        0    1      2    3      4   5       6
-        let _cpu     = s.next().unwrap(); //ignore the "cpu" word
-        let user     = s.next().unwrap().parse::<f64>().unwrap();
-        let nice     = s.next().unwrap().parse::<f64>().unwrap();
-        let system   = s.next().unwrap().parse::<f64>().unwrap();
-        let idle     = s.next().unwrap().parse::<f64>().unwrap();
-        let iowait   = s.next().unwrap().parse::<f64>().unwrap();
-        let irq      = s.next().unwrap().parse::<f64>().unwrap();
-        let softirq  = s.next().unwrap().parse::<f64>().unwrap();
+        let _cpu     = s.next(); //ignore the "cpu" word
+        let user     = s.next().unwrap_or("0").parse::<f64>().expect("should always be a number");
+        let nice     = s.next().unwrap_or("0").parse::<f64>().expect("should always be a number");
+        let system   = s.next().unwrap_or("0").parse::<f64>().expect("should always be a number");
+        let idle     = s.next().unwrap_or("0").parse::<f64>().expect("should always be a number");
+        let iowait   = s.next().unwrap_or("0").parse::<f64>().expect("should always be a number");
+        let irq      = s.next().unwrap_or("0").parse::<f64>().expect("should always be a number");
+        let softirq  = s.next().unwrap_or("0").parse::<f64>().expect("should always be a number");
 
         (user, nice, system, idle, iowait, irq, softirq)
     };
