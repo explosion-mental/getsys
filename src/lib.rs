@@ -1,6 +1,10 @@
-//! # `getsys` Library to get _some_ system _stuff_
-//! The plan is to add some stable support (minor versions) and then release v2 (major version) that
-//! implements proper error handling using thiserror macros.
+#![doc = include_str!("../README.md")]
+//! \n
+//! # Thoughts
+//! * [X] add some stable support (minor versions)
+//! * [ ] release v2 (major version) that implements proper error handling using thiserror macros
+//! (This is still an idea, given that this lib **only** reads /sys fs, which should exist in order
+//! for this to work)
 
 /// Cpu functions
 pub mod cpu;
