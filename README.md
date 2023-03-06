@@ -1,28 +1,29 @@
 # getsys - get _some_ system _stuff_
+[![CodeBerg](https://img.shields.io/badge/Hosted_at-Codeberg-%232185D0?style=flat-square&logo=CodeBerg)](https://codeberg.org/explosion-mental/getsys)
+[![license](https://img.shields.io/badge/license-MIT-lightgreen?style=flat-square)](./LICENSE)
+[![loc](https://img.shields.io/tokei/lines/github/explosion-mental/racf?color=lightgreen&style=flat-square)](./src)
+[![cratesv](https://img.shields.io/crates/v/racf?style=flat-square&color=red)](https://crates.io/crates/getsys)
 
 Support: Linux.
 
 Mainly made to have a simpler and straightforward interface, and backend.
 
-# Features
+## Features
+
+### Cpu
 - cpu turbo boost state
 - average temperature
 - cpu percentage over an interval of `Duration`
-- Per cpu values:
-	* [scaling govenor](https://www.kernel.org/doc/html/v4.14/admin-guide/pm/cpufreq.html)
-	* driver
-	* frequency
+### Per Cpu
+- [scaling govenor](https://www.kernel.org/doc/html/v4.14/admin-guide/pm/cpufreq.html)
+- driver
+- frequency
 
-# docs
-```
-cargo doc --open
-```
-
-# crates
+## crates
 
 - glob 0.3.0
 
-# Honorable Mentions
+## Honorable Mentions
 
 I have written this little library to fetch information I couldn't get with other crates, but there are very nicely writen crates that provide information about the system that this crate doesn't provide:
 
