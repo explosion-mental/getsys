@@ -5,6 +5,7 @@ use std::fs::File;
 use std::path::Path;
 
 /// Returns true if the turbo boost is enabled, false if it is disabled or not supported.
+/// NOTE: use [`try_turbo()`]
 #[deprecated(since="1.1.0", note="please use `try_turbo()` with `TurboState` instead.")]
 pub fn turbo() -> bool {
     let intelpstate = "/sys/devices/system/cpu/intel_pstate/no_turbo";

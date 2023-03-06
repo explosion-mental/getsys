@@ -1,4 +1,4 @@
-//! `getsys` Library to get _some_ system _stuff_
+//! # `getsys` Library to get _some_ system _stuff_
 //! The plan is to add some stable support (minor versions) and then release v2 (major version) that
 //! implements proper error handling using thiserror macros.
 
