@@ -3,6 +3,8 @@
 //! ```
 #![doc = include_str!("../examples/cpu.rs")]
 //! ```
+//! - [ ] Windows turbo boost support
+//! reference: <https://answers.microsoft.com/en-us/windows/forum/all/windows-10-unable-to-access-complete-power-options/4aa305ed-d788-4356-b7b5-9b752fdd0944>
 use std::io::prelude::*;
 use std::fs;
 use std::fs::File;
