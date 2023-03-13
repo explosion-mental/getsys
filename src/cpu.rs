@@ -9,6 +9,7 @@ use std::io::prelude::*;
 use std::fs;
 use std::fs::File;
 use std::path::Path;
+use std::fmt;
 
 /// Returns true if the turbo boost is enabled, false if it is disabled or not supported.
 /// NOTE: use [`try_turbo()`]
@@ -37,6 +38,18 @@ pub enum TurboState {
     On,
     Off,
     NotSupported,
+}
+
+/// Add a simple `Display` for [`TurboState`]
+impl fmt::Display for TurboState {
+    // This trait requires `fmt` with this exact signature.
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::On           => write!(f, "Enabled"),
+            Self::Off          => write!(f, "Disabled"),
+            Self::NotSupported => write!(f, "Not Supported"),
+        }
+    }
 }
 
 /// Same as `turbo()` but takes into account `NotSupported` machines.
