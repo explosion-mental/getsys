@@ -3,21 +3,16 @@ extern crate getsys;
 use getsys::PerCpu;
 
 fn main() {
-    // Vector of values
+    // init the `Vec<String>`s to get an `.iter()` below
     let freq = PerCpu::freq();
     let gov  = PerCpu::governor();
     let driv = PerCpu::driver();
 
-    let mut f = freq.iter();
-    let mut g = gov.iter();
-    let mut d = driv.iter();
+    // `.zip()` `.iter()` values as ((governor, driver), frequency), then `.enumerate()`
+    let values = gov.iter().zip(driv.iter()).zip(freq.iter()).enumerate();
 
-    for i in 0..freq.len() {
-        println!("CPU{} {} {} {}",
-            i,
-            f.next().unwrap(),
-            g.next().unwrap(),
-            d.next().unwrap(),
-        );
+    // iterate over values and print it
+    for (i, ((governor, driver), frequency)) in values {
+        println!("CPU{} {} {} {}", i, frequency, driver, governor);
     }
 }
