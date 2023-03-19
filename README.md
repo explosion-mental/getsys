@@ -3,7 +3,7 @@
 [![lib rs](https://img.shields.io/badge/lib.rs-latest-84f)](https://lib.rs/getsys)
 [![downloads](https://img.shields.io/crates/d/getsys?style=flat-square&color=yellow)](https://crates.io/crates/getsys)
 [![license](https://img.shields.io/crates/l/getsys?style=flat-square)](https://codeberg.org/explosion-mental/getsys/src/branch/main/LICENSE)
-[![dependency status](https://deps.rs/repo/codeberg/explosion-mental/getsys/status.svg?color=purple)](https://deps.rs/repo/codeberg/explosion-mental/getsys)
+[![dependency status](https://deps.rs/repo/codeberg/explosion-mental/getsys/status.svg?style=flat-square&color=purple)](https://deps.rs/repo/codeberg/explosion-mental/getsys)
 [![loc](https://img.shields.io/tokei/lines/github/explosion-mental/getsys?color=lightgreen&style=flat-square)](https://codeberg.org/explosion-mental/getsys/src/branch/main/src)
 [![CodeBerg](https://img.shields.io/badge/Hosted_at-Codeberg-%232185D0?style=flat-square&logo=CodeBerg)](https://codeberg.org/explosion-mental/getsys)
 <br>
