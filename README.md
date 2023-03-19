@@ -3,7 +3,8 @@
 [![license](https://img.shields.io/badge/license-MIT-lightgreen?style=flat-square)](./LICENSE)
 [![loc](https://img.shields.io/tokei/lines/github/explosion-mental/racf?color=lightgreen&style=flat-square)](./src)
 [![cratesv](https://img.shields.io/crates/v/getsys?style=flat-square&color=red)](https://crates.io/crates/getsys)
-
+[![dependency status](https://deps.rs/repo/codeberg/explosion-mental/getsys/status.svg)](https://deps.rs/repo/codeberg/explosion-mental/getsys)
+<br>
 Support: Linux.
 
 Mainly made to have a simpler and straightforward interface, and backend.
